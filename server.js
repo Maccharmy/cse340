@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from "express";
 import { testConnection } from './src/models/db.js'; // or './db.js' if you didn’t create src/models
 
