@@ -1,5 +1,8 @@
 import { Pool } from 'pg';
 
+// Debug: print out the DB_URL being used
+console.log("DB_URL:", process.env.DB_URL);
+
 const pool = new Pool({
     connectionString: process.env.DB_URL,
     ssl: { rejectUnauthorized: false }
