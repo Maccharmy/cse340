@@ -22,10 +22,10 @@ app.get("/", (req, res) => {
 // Organizations route
 app.get("/organizations", async (req, res) => {
     const organizations = await getAllOrganizations();
-    console.log(organizations);
-
     const title = "Our Partner Organizations";
-    res.render("organizations", { title });
+
+    // Pass both title and organizations to the template
+    res.render("organizations", { title, organizations });
 });
 
 // Projects route
