@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllProjects } from './src/models/projects.js';  // ✅ corrected import
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,14 +24,22 @@ app.get("/", (req, res) => {
 app.get("/organizations", async (req, res) => {
     const organizations = await getAllOrganizations();
     const title = "Our Partner Organizations";
-
-    // Pass both title and organizations to the template
     res.render("organizations", { title, organizations });
 });
 
 // Projects route
-app.get("/projects", (req, res) => {
-    res.render("projects", { title: "Service Projects" });
+app.get("/projects", async (req, res) => {
+    try {
+        const projects = await getAllProjects();
+
+        // ✅ Log results to console to verify query works
+        console.log("Projects retrieved:", projects);
+
+        res.render("projects", { title: "Service Projects", projects });
+    } catch (error) {
+        console.error("Error fetching projects:", error);
+        res.status(500).send("Unable to load projects at this time.");
+    }
 });
 
 // Categories route

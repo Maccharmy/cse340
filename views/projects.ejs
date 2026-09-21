@@ -8,31 +8,20 @@
     </section>
 
     <section class="content-section">
-        <div class="card-grid">
-            <article class="card">
-                <h2>Community Cleanup</h2>
-                <p>
-                    Participate in projects that help create cleaner and healthier
-                    communities.
-                </p>
-            </article>
-
-            <article class="card">
-                <h2>Educational Support</h2>
-                <p>
-                    Help students and communities through educational service
-                    projects.
-                </p>
-            </article>
-
-            <article class="card">
-                <h2>Community Outreach</h2>
-                <p>
-                    Support individuals and families through community outreach
-                    activities.
-                </p>
-            </article>
-        </div>
+        <% if (projects.length===0) { %>
+            <p>No projects available at this time.</p>
+            <% } else { %>
+                <ul>
+                    <% projects.forEach(project=> { %>
+                        <li>
+                            <%= project.date.toLocaleDateString('en-US', { year: 'numeric' , month: 'long' ,
+                                day: 'numeric' }) %>:
+                                <%= project.title %>
+                                    (<%= project.organization_name %>)
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
     </section>
 
     <%- include("partials/footer") %>

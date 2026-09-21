@@ -16,4 +16,24 @@ VALUES
 ('BrightFuture Builders', 'A nonprofit focused on improving community infrastructure through sustainable construction projects.', 'info@brightfuturebuilders.org', 'brightfuture-logo.png'),
 ('GreenHarvest Growers', 'An urban farming collective promoting food sustainability and education in local neighborhoods.', 'contact@greenharvest.org', 'greenharvest-logo.png'),
 ('UnityServe Volunteers', 'A volunteer coordination group supporting local charities and service initiatives.', 'hello@unityserve.org', 'unityserve-logo.png');
+SELECT * FROM organization;
+SELECT name, logo_filename FROM organization;
+
+CREATE TABLE services (
+    service_id SERIAL PRIMARY KEY,
+    organization_id INT REFERENCES organization(organization_id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    date DATE NOT NULL
+);
+
+INSERT INTO services (organization_id, title, description, location, date)
+VALUES
+(1, 'Tree Planting', 'Community tree planting event', 'City Park', '2026-09-25'),
+(1, 'Beach Cleanup', 'Volunteers cleaning the shoreline', 'Sunny Beach', '2026-10-01'),
+(2, 'Health Fair', 'Free medical checkups', 'Town Hall', '2026-09-30'),
+(2, 'Blood Donation', 'Organized blood donation camp', 'Hospital Grounds', '2026-10-05'),
+(3, 'Tutoring Program', 'Helping students with homework', 'Library', '2026-09-28');
+
 
