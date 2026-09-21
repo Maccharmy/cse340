@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config();   // <-- load .env before anything else
+dotenv.config();   // Load .env before anything else
 
 import { Pool } from 'pg';
 
