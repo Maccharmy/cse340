@@ -1,4 +1,4 @@
-const db = require('../db');
+import db from '../db.js';
 
 const getAllProjects = async () => {
   const query = `
@@ -11,4 +11,5 @@ const getAllProjects = async () => {
   return result.rows;
 };
 
-module.exports = { getAllProjects };
+// ✅ ES Module export
+export { getAllProjects };

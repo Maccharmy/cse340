@@ -2,39 +2,41 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';  // ✅ corrected import
+import { getAllProjects } from './src/models/projects.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-// Serve static files from the public folder
+// Serve static files
 app.use(express.static("public"));
 
-// Home route
+// Routes
 app.get("/", (req, res) => {
     res.render("home", { title: "Home" });
 });
 
-// Organizations route
 app.get("/organizations", async (req, res) => {
     const organizations = await getAllOrganizations();
-    const title = "Our Partner Organizations";
-    res.render("organizations", { title, organizations });
+    res.render("organizations", { title: "Our Partner Organizations", organizations });
 });
 
-// Projects route
 app.get("/projects", async (req, res) => {
     try {
         const projects = await getAllProjects();
-
-        // ✅ Log results to console to verify query works
         console.log("Projects retrieved:", projects);
-
         res.render("projects", { title: "Service Projects", projects });
     } catch (error) {
         console.error("Error fetching projects:", error);
@@ -42,7 +44,6 @@ app.get("/projects", async (req, res) => {
     }
 });
 
-// Categories route
 app.get("/categories", (req, res) => {
     res.render("categories", { title: "Service Project Categories" });
 });
