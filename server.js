@@ -3,6 +3,7 @@ dotenv.config();
 
 import express from "express";
 import { testConnection } from './src/models/db.js';
+import { getAllOrganizations } from './src/models/organizations.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,8 +20,12 @@ app.get("/", (req, res) => {
 });
 
 // Organizations route
-app.get("/organizations", (req, res) => {
-    res.render("organizations", { title: "Organizations" });
+app.get("/organizations", async (req, res) => {
+    const organizations = await getAllOrganizations();
+    console.log(organizations);
+
+    const title = "Our Partner Organizations";
+    res.render("organizations", { title });
 });
 
 // Projects route
@@ -40,6 +45,6 @@ app.listen(port, async () => {
         console.log(`Server is running at http://127.0.0.1:${port}`);
         console.log(`Environment: ${process.env.NODE_ENV}`);
     } catch (error) {
-        console.error('Error connecting to the database:', error);
+        console.error("Error connecting to the database:", error);
     }
 });
