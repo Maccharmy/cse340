@@ -1,0 +1,112 @@
+-- ========================================
+-- Organization Table
+-- ========================================
+CREATE TABLE organization (
+    organization_id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    description TEXT NOT NULL,
+    contact_email VARCHAR(255) NOT NULL,
+    logo_filename VARCHAR(255) NOT NULL
+);
+
+-- ========================================
+-- Insert 15 Organizations
+-- ========================================
+INSERT INTO organization (name, description, contact_email, logo_filename) VALUES
+('BrightFuture Builders', 'A nonprofit focused on improving community infrastructure through sustainable construction projects.', 'info@brightfuturebuilders.org', 'brightfuture-logo.png'),
+('GreenHarvest Growers', 'An urban farming collective promoting food sustainability and education in local neighborhoods.', 'contact@greenharvest.org', 'greenharvest-logo.png'),
+('UnityServe Volunteers', 'A volunteer coordination group supporting local charities and service initiatives.', 'hello@unityserve.org', 'unityserve-logo.png'),
+('Hope Horizon', 'Provides shelter and support for homeless families.', 'contact@hopehorizon.org', 'hopehorizon-logo.png'),
+('Tech4Youth', 'Offers coding and digital literacy programs for young people.', 'info@tech4youth.org', 'tech4youth-logo.png'),
+('FoodShare Network', 'Distributes surplus food to communities in need.', 'hello@foodshare.org', 'foodshare-logo.png'),
+('CleanWater Initiative', 'Works to provide clean drinking water in rural areas.', 'support@cleanwater.org', 'cleanwater-logo.png'),
+('ArtsConnect', 'Promotes arts education and cultural exchange programs.', 'team@artsconnect.org', 'artsconnect-logo.png'),
+('SafeSteps', 'Supports victims of domestic violence with counseling and housing.', 'help@safesteps.org', 'safesteps-logo.png'),
+('Global Health Alliance', 'Runs vaccination and health awareness campaigns worldwide.', 'info@globalhealth.org', 'globalhealth-logo.png'),
+('EduBridge Foundation', 'Provides scholarships and mentorship for underprivileged students.', 'contact@edubridge.org', 'edubridge-logo.png'),
+('EcoGuardians', 'Focuses on wildlife conservation and environmental advocacy.', 'hello@ecoguardians.org', 'ecoguardians-logo.png'),
+('Community Builders', 'Develops affordable housing and community centers.', 'support@communitybuilders.org', 'communitybuilders-logo.png'),
+('Bright Minds Academy', 'Offers after-school tutoring and enrichment programs.', 'info@brightminds.org', 'brightminds-logo.png'),
+('WellnessWorks', 'Promotes mental health awareness and counseling services.', 'contact@wellnessworks.org', 'wellnessworks-logo.png');
+
+-- ========================================
+-- Project Table
+-- ========================================
+CREATE TABLE project (
+    project_id SERIAL PRIMARY KEY,
+    organization_id INT REFERENCES organization(organization_id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    date DATE NOT NULL
+);
+
+-- ========================================
+-- Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT
+);
+
+-- ========================================
+-- Many-to-Many Join Table
+-- ========================================
+CREATE TABLE project_category (
+    project_id INT REFERENCES project(project_id) ON DELETE CASCADE,
+    category_id INT REFERENCES category(category_id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id)
+);
+
+-- ========================================
+-- Insert Categories
+-- ========================================
+INSERT INTO category (name, description) VALUES
+('Environment', 'Projects focused on environmental sustainability'),
+('Health', 'Projects providing healthcare and wellness support'),
+('Education', 'Projects supporting learning and tutoring initiatives');
+
+-- ========================================
+-- Insert Projects
+-- ========================================
+INSERT INTO project (organization_id, title, description, location, date) VALUES
+(1, 'Tree Planting', 'Community tree planting event', 'City Park', '2026-09-25'),
+(1, 'Beach Cleanup', 'Volunteers cleaning the shoreline', 'Sunny Beach', '2026-10-01'),
+(2, 'Health Fair', 'Free medical checkups', 'Town Hall', '2026-09-30'),
+(2, 'Blood Donation', 'Organized blood donation camp', 'Hospital Grounds', '2026-10-05'),
+(3, 'Tutoring Program', 'Helping students with homework', 'Library', '2026-09-28'),
+(4, 'Community Housing Build', 'Constructing affordable homes for families in need.', 'City Center', '2026-10-15'),
+(5, 'Youth Coding Bootcamp', 'Teaching programming skills to teenagers.', 'Tech Hub', '2026-11-01'),
+(6, 'Food Distribution Drive', 'Delivering food packages to low-income households.', 'Community Hall', '2026-10-20'),
+(7, 'Village Water Wells', 'Installing clean water wells in rural villages.', 'Riverside', '2026-11-05'),
+(8, 'Art Festival', 'Celebrating local artists and cultural heritage.', 'Town Square', '2026-10-25'),
+(9, 'Domestic Violence Awareness Walk', 'Raising awareness and support for victims.', 'Main Street', '2026-11-10'),
+(10, 'Vaccination Campaign', 'Providing free vaccines to children.', 'Health Center', '2026-09-30'),
+(11, 'Scholarship Award Ceremony', 'Recognizing students with scholarships.', 'University Auditorium', '2026-10-12'),
+(12, 'Wildlife Conservation Workshop', 'Educating communities on protecting endangered species.', 'Nature Reserve', '2026-11-02'),
+(13, 'Community Center Renovation', 'Renovating spaces for youth and families.', 'West End', '2026-10-18'),
+(14, 'Tutoring Marathon', 'Offering free tutoring sessions for students.', 'Library', '2026-09-28'),
+(15, 'Mental Health Seminar', 'Promoting mental health awareness and counseling.', 'Conference Hall', '2026-11-08');
+
+-- ========================================
+-- Project-Category Relationships
+-- ========================================
+INSERT INTO project_category (project_id, category_id) VALUES
+(1, 1), -- Tree Planting → Environment
+(2, 1), -- Beach Cleanup → Environment
+(3, 2), -- Health Fair → Health
+(4, 2), -- Blood Donation → Health
+(5, 3), -- Tutoring Program → Education
+(6, 1), -- Housing Build → Environment
+(7, 3), -- Coding Bootcamp → Education
+(8, 2), -- Food Distribution → Health
+(9, 1), -- Water Wells → Environment
+(10, 3), -- Art Festival → Education
+(11, 2), -- Awareness Walk → Health
+(12, 2), -- Vaccination Campaign → Health
+(13, 3), -- Scholarship Ceremony → Education
+(14, 1), -- Conservation Workshop → Environment
+(15, 1), -- Center Renovation → Environment
+(16, 3), -- Tutoring Marathon → Education
+(17, 2); -- Mental Health Seminar → Health
