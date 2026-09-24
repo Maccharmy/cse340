@@ -24,6 +24,20 @@ app.set("views", path.join(__dirname, "views"));
 // Serve static files
 app.use(express.static("public"));
 
+// ✅ Middleware to log all incoming requests
+app.use((req, res, next) => {
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`${req.method} ${req.url}`);
+    }
+    next();
+});
+
+// ✅ Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+    res.locals.NODE_ENV = process.env.NODE_ENV;
+    next();
+});
+
 // Routes
 app.get("/", (req, res) => {
     res.render("home", { title: "Home" });
@@ -53,6 +67,12 @@ app.get("/categories", async (req, res) => {
         console.error("Error fetching categories:", error);
         res.status(500).send("Unable to load categories at this time.");
     }
+});
+
+// ✅ Global error handler middleware
+app.use((err, req, res, next) => {
+    console.error("Error:", err.message);
+    res.status(err.status || 500).send("Something went wrong!");
 });
 
 // Start server
