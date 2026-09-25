@@ -1,25 +1,39 @@
 <%- include("partials/header") %>
 
     <section class="page-header">
+
         <h1>
             <%= title %>
         </h1>
+
         <p>Explore service projects by category.</p>
+
     </section>
 
     <section class="content-section">
+
         <div class="card-grid">
+
             <% categories.forEach(category=> { %>
+
                 <article class="card">
+
                     <h2>
-                        <%= category.name %>
+                        <a href="/category/<%= category.category_id %>">
+                            <%= category.name %>
+                        </a>
                     </h2>
+
                     <p>
                         <%= category.description %>
                     </p>
+
                 </article>
+
                 <% }) %>
+
         </div>
+
     </section>
 
     <%- include("partials/footer") %>
