@@ -21,10 +21,17 @@ html {
 
 body {
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
+}
+
+main {
+    flex: 1;
 }
 
 .container {
@@ -149,7 +156,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-/* ✅ Updated logo styling */
+/* Organization Logo */
 .org-logo {
     display: block;
     max-width: 150px;
@@ -172,7 +179,7 @@ body {
 
 /* Footer */
 .site-footer {
-    margin-top: 3rem;
+    margin-top: auto;
     padding: 2rem 0;
     background-color: var(--primary-dark);
     color: var(--light-text);

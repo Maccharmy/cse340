@@ -7,9 +7,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import router from './src/routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -39,40 +37,34 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.get("/", (req, res) => {
-    res.render("home", { title: "Home" });
+app.use("/", router);
+
+// Catch-all route for 404 errors
+app.use((req, res, next) => {
+    const err = new Error('Page Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.get("/organizations", async (req, res) => {
-    const organizations = await getAllOrganizations();
-    res.render("organizations", { title: "Our Partner Organizations", organizations });
-});
-
-app.get("/projects", async (req, res) => {
-    try {
-        const projects = await getAllProjects();
-        console.log("Projects retrieved:", projects);
-        res.render("projects", { title: "Service Projects", projects });
-    } catch (error) {
-        console.error("Error fetching projects:", error);
-        res.status(500).send("Unable to load projects at this time.");
-    }
-});
-
-app.get("/categories", async (req, res) => {
-    try {
-        const categories = await getAllCategories();
-        res.render("categories", { title: "Service Project Categories", categories });
-    } catch (error) {
-        console.error("Error fetching categories:", error);
-        res.status(500).send("Unable to load categories at this time.");
-    }
-});
-
-// ✅ Global error handler middleware
+// Global error handler
 app.use((err, req, res, next) => {
-    console.error("Error:", err.message);
-    res.status(err.status || 500).send("Something went wrong!");
+    // Log error details for debugging
+    console.error('Error occurred:', err.message);
+    console.error('Stack trace:', err.stack);
+
+    // Determine status and template
+    const status = err.status || 500;
+    const template = status === 404 ? '404' : '500';
+
+    // Prepare data for the template
+    const context = {
+        title: status === 404 ? 'Page Not Found' : 'Server Error',
+        error: err.message,
+        stack: err.stack
+    };
+
+    // Render the appropriate error template
+    res.status(status).render(`errors/${template}`, context);
 });
 
 // Start server
