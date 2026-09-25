@@ -1,33 +1,51 @@
 <%- include("partials/header") %>
 
     <section class="page-header">
+
         <h1>
             <%= title %>
         </h1>
+
         <p>Discover organizations where you can serve and make a difference.</p>
+
     </section>
 
     <section class="content-section">
+
         <div class="card-grid">
+
             <% organizations.forEach(org=> { %>
+
                 <article class="card organization-card">
+
                     <!-- Use the logo_filename field from the database -->
                     <img src="/images/<%= org.logo_filename %>" alt="<%= org.name %> logo" class="org-logo"
                         loading="lazy">
 
                     <div class="card-content">
+
                         <h2>
-                            <%= org.name %>
+                            <a href="/organization/<%= org.organization_id %>">
+                                <%= org.name %>
+                            </a>
                         </h2>
+
                         <p>
                             <%= org.description %>
                         </p>
-                        <p>Contact: <%= org.contact_email %>
+
+                        <p>
+                            Contact: <%= org.contact_email %>
                         </p>
+
                     </div>
+
                 </article>
+
                 <% }) %>
+
         </div>
+
     </section>
 
     <%- include("partials/footer") %>
