@@ -59,6 +59,10 @@ const processNewOrganizationForm = async (req, res) => {
         logoFilename
     );
 
+    // Store a temporary success message in the session
+    req.flash('success', 'Organization created successfully!');
+
+    // Redirect to the organization details page
     res.redirect(`/organization/${organizationId}`);
 };
 

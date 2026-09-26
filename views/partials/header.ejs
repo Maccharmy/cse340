@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
@@ -12,20 +15,74 @@
     <meta name="description" content="Service Network connects people with organizations and service projects.">
 
     <link rel="stylesheet" href="/css/styles.css">
+
 </head>
 
 <body>
+
     <header class="site-header">
+
         <div class="container">
+
             <a href="/" class="site-logo">Service Network</a>
 
             <nav class="site-nav" aria-label="Main navigation">
+
                 <a href="/">Home</a>
+
                 <a href="/organizations">Organizations</a>
+
                 <a href="/projects">Projects</a>
+
                 <a href="/categories">Categories</a>
+
             </nav>
+
         </div>
+
     </header>
 
-    <main class="container">
+    <!-- Flash Messages -->
+    <% const messages=flash(); %>
+
+        <% if (messages.success && messages.success.length> 0) { %>
+            <div class="flash-message flash-success">
+                <% messages.success.forEach(message=> { %>
+                    <p>
+                        <%= message %>
+                    </p>
+                    <% }); %>
+            </div>
+            <% } %>
+
+                <% if (messages.error && messages.error.length> 0) { %>
+                    <div class="flash-message flash-error">
+                        <% messages.error.forEach(message=> { %>
+                            <p>
+                                <%= message %>
+                            </p>
+                            <% }); %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.warning && messages.warning.length> 0) { %>
+                            <div class="flash-message flash-warning">
+                                <% messages.warning.forEach(message=> { %>
+                                    <p>
+                                        <%= message %>
+                                    </p>
+                                    <% }); %>
+                            </div>
+                            <% } %>
+
+                                <% if (messages.info && messages.info.length> 0) { %>
+                                    <div class="flash-message flash-info">
+                                        <% messages.info.forEach(message=> { %>
+                                            <p>
+                                                <%= message %>
+                                            </p>
+                                            <% }); %>
+                                    </div>
+                                    <% } %>
+
+                                        <main class="container">

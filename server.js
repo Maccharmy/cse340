@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from "express";
+import session from 'express-session';
+import flash from './src/middleware/flash.js';
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -14,10 +16,24 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 60 * 60 * 1000
+    }
+}));
+
+// Use flash message middleware
+app.use(flash);
 
 // Parse form and JSON data
 app.use(express.urlencoded({ extended: true }));
