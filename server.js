@@ -19,10 +19,14 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Parse form and JSON data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Serve static files
 app.use(express.static("public"));
 
-// ✅ Middleware to log all incoming requests
+// Middleware to log incoming requests
 app.use((req, res, next) => {
     if (process.env.NODE_ENV === 'development') {
         console.log(`${req.method} ${req.url}`);
@@ -30,7 +34,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// ✅ Middleware to make NODE_ENV available to all templates
+// Middleware to make NODE_ENV available to all templates
 app.use((req, res, next) => {
     res.locals.NODE_ENV = process.env.NODE_ENV;
     next();

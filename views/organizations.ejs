@@ -1,17 +1,13 @@
 <%- include("partials/header") %>
 
     <section class="page-header">
-
         <h1>
             <%= title %>
         </h1>
-
         <p>Discover organizations where you can serve and make a difference.</p>
-
     </section>
 
     <section class="content-section">
-
         <div class="card-grid">
 
             <% organizations.forEach(org=> { %>
@@ -39,13 +35,15 @@
                         </p>
 
                     </div>
-
                 </article>
 
                 <% }) %>
 
         </div>
-
     </section>
+
+    <p>
+        <a href="/new-organization">Add a new organization</a>
+    </p>
 
     <%- include("partials/footer") %>
