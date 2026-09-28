@@ -1,6 +1,7 @@
 import {
     getUpcomingProjects,
     getProjectDetails,
+    updateProject,
     createProject
 } from '../models/projects.js';
 
@@ -17,8 +18,10 @@ import {
     validationResult
 } from 'express-validator';
 
+
 // Number of upcoming projects to display
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
+
 
 // Project form validation
 const projectValidation = [
@@ -54,11 +57,12 @@ const projectValidation = [
         .withMessage('Organization is required')
         .isInt()
         .withMessage('Organization must be a valid integer')
-
 ];
+
 
 // Display the upcoming service projects page
 const showProjectsPage = async (req, res) => {
+
     const projects =
         await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
 
@@ -68,11 +72,12 @@ const showProjectsPage = async (req, res) => {
         title,
         projects
     });
-
 };
+
 
 // Display the details for a single service project
 const showProjectDetailsPage = async (req, res) => {
+
     const projectId = req.params.id;
 
     const project =
@@ -88,11 +93,12 @@ const showProjectDetailsPage = async (req, res) => {
         project,
         categories
     });
-
 };
+
 
 // Display the new service project form
 const showNewProjectForm = async (req, res) => {
+
     const organizations =
         await getAllOrganizations();
 
@@ -102,8 +108,8 @@ const showNewProjectForm = async (req, res) => {
         title,
         organizations
     });
-
 };
+
 
 // Process the new service project form
 const processNewProjectForm = async (req, res) => {
@@ -158,8 +164,77 @@ const processNewProjectForm = async (req, res) => {
 
         res.redirect('/new-project');
     }
-
 };
+
+
+// Display the edit service project form
+const showEditProjectForm = async (req, res) => {
+
+    const projectId = req.params.id;
+
+    const project =
+        await getProjectDetails(projectId);
+
+    const organizations =
+        await getAllOrganizations();
+
+    const title = 'Edit Service Project';
+
+    res.render('edit-project', {
+        title,
+        project,
+        organizations
+    });
+};
+
+
+// Process the edit service project form
+const processEditProjectForm = async (req, res) => {
+
+    const projectId = req.params.id;
+
+    const {
+        title,
+        description,
+        location,
+        date,
+        organizationId
+    } = req.body;
+
+    try {
+
+        await updateProject(
+            projectId,
+            title,
+            description,
+            location,
+            date,
+            organizationId
+        );
+
+        req.flash(
+            'success',
+            'Service project updated successfully!'
+        );
+
+        res.redirect(`/project/${projectId}`);
+
+    } catch (error) {
+
+        console.error(
+            'Error updating service project:',
+            error
+        );
+
+        req.flash(
+            'error',
+            'There was an error updating the service project.'
+        );
+
+        res.redirect(`/edit-project/${projectId}`);
+    }
+};
+
 
 // Export the controllers
 export {
@@ -167,5 +242,7 @@ export {
     showProjectDetailsPage,
     showNewProjectForm,
     processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm,
     projectValidation
 };

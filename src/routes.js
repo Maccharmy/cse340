@@ -17,6 +17,8 @@ import {
     showProjectDetailsPage,
     showNewProjectForm,
     processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm,
     projectValidation
 } from './controllers/projects.js';
 
@@ -34,11 +36,17 @@ const router = express.Router();
 
 
 // Home page
-router.get('/', showHomePage);
+router.get(
+    '/',
+    showHomePage
+);
 
 
 // Organization routes
-router.get('/organizations', showOrganizationsPage);
+router.get(
+    '/organizations',
+    showOrganizationsPage
+);
 
 router.get(
     '/organization/:id',
@@ -94,6 +102,18 @@ router.post(
     '/new-project',
     projectValidation,
     processNewProjectForm
+);
+
+
+// Edit service project routes
+router.get(
+    '/edit-project/:id',
+    showEditProjectForm
+);
+
+router.post(
+    '/edit-project/:id',
+    processEditProjectForm
 );
 
 
