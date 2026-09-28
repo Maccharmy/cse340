@@ -1,7 +1,8 @@
 import {
     getAllOrganizations,
     getOrganizationDetails,
-    createOrganization
+    createOrganization,
+    updateOrganization
 } from '../models/organizations.js';
 
 import {
@@ -38,7 +39,7 @@ const organizationValidation = [
 ];
 
 
-// Define the organizations page controller
+// Display all organizations
 const showOrganizationsPage = async (req, res) => {
     const organizations = await getAllOrganizations();
     const title = 'Our Partner Organizations';
@@ -47,7 +48,7 @@ const showOrganizationsPage = async (req, res) => {
 };
 
 
-// Define the organization details page controller
+// Display organization details
 const showOrganizationDetailsPage = async (req, res) => {
     const organizationId = req.params.id;
 
@@ -81,12 +82,10 @@ const processNewOrganizationForm = async (req, res) => {
     const results = validationResult(req);
 
     if (!results.isEmpty()) {
-        // Validation failed - loop through errors
         results.array().forEach((error) => {
             req.flash('error', error.msg);
         });
 
-        // Redirect back to the new organization form
         return res.redirect('/new-organization');
     }
 
@@ -109,11 +108,66 @@ const processNewOrganizationForm = async (req, res) => {
 };
 
 
+// Display the edit organization form
+const showEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+
+    const organizationDetails =
+        await getOrganizationDetails(organizationId);
+
+    const title = 'Edit Organization';
+
+    res.render('edit-organization', {
+        title,
+        organizationDetails
+    });
+};
+
+
+// Process the edit organization form
+const processEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+
+    // Check for validation errors
+    const results = validationResult(req);
+
+    if (!results.isEmpty()) {
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Return to the edit form if validation fails
+        return res.redirect(`/edit-organization/${organizationId}`);
+    }
+
+    const {
+        name,
+        description,
+        contactEmail,
+        logoFilename
+    } = req.body;
+
+    await updateOrganization(
+        organizationId,
+        name,
+        description,
+        contactEmail,
+        logoFilename
+    );
+
+    req.flash('success', 'Organization updated successfully!');
+
+    res.redirect(`/organization/${organizationId}`);
+};
+
+
 // Export the controllers
 export {
     showOrganizationsPage,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
+    showEditOrganizationForm,
+    processEditOrganizationForm,
     organizationValidation
 };

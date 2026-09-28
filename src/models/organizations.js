@@ -1,10 +1,11 @@
 import db from './db.js';
 
+
 const getAllOrganizations = async () => {
   const query = `
         SELECT organization_id, name, description, contact_email, logo_filename
         FROM public.organization;
-    `;
+`;
 
   const result = await db.query(query);
 
@@ -14,15 +15,15 @@ const getAllOrganizations = async () => {
 
 const getOrganizationDetails = async (organizationId) => {
   const query = `
-        SELECT
-            organization_id,
-            name,
-            description,
-            contact_email,
-            logo_filename
+SELECT
+organization_id,
+  name,
+  description,
+  contact_email,
+  logo_filename
         FROM organization
         WHERE organization_id = $1;
-    `;
+`;
 
   const queryParams = [organizationId];
   const result = await db.query(query, queryParams);
@@ -47,15 +48,15 @@ const createOrganization = async (
   logoFilename
 ) => {
   const query = `
-        INSERT INTO organization (
-            name,
-            description,
-            contact_email,
-            logo_filename
-        )
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO organization(
+  name,
+  description,
+  contact_email,
+  logo_filename
+)
+VALUES($1, $2, $3, $4)
         RETURNING organization_id;
-    `;
+`;
 
   const queryParams = [
     name,
@@ -81,8 +82,57 @@ const createOrganization = async (
 };
 
 
+/**
+ * Updates an existing organization in the database.
+ * @param {number|string} organizationId - The organization ID.
+ * @param {string} name - The updated organization name.
+ * @param {string} description - The updated organization description.
+ * @param {string} contactEmail - The updated contact email.
+ * @param {string} logoFilename - The updated logo filename.
+ */
+const updateOrganization = async (
+  organizationId,
+  name,
+  description,
+  contactEmail,
+  logoFilename
+) => {
+  const query = `
+        UPDATE organization
+SET
+name = $1,
+  description = $2,
+  contact_email = $3,
+  logo_filename = $4
+        WHERE organization_id = $5;
+`;
+
+  const queryParams = [
+    name,
+    description,
+    contactEmail,
+    logoFilename,
+    organizationId
+  ];
+
+  const result = await db.query(query, queryParams);
+
+  if (result.rowCount === 0) {
+    throw new Error('Organization not found');
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log(
+      'Updated organization with ID:',
+      organizationId
+    );
+  }
+};
+
+
 export {
   getAllOrganizations,
   getOrganizationDetails,
-  createOrganization
+  createOrganization,
+  updateOrganization
 };
