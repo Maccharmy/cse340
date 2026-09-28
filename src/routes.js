@@ -14,7 +14,10 @@ import {
 
 import {
     showProjectsPage,
-    showProjectDetailsPage
+    showProjectDetailsPage,
+    showNewProjectForm,
+    processNewProjectForm,
+    projectValidation
 } from './controllers/projects.js';
 
 import {
@@ -24,9 +27,7 @@ import {
 
 import { testErrorPage } from './controllers/errors.js';
 
-
 const router = express.Router();
-
 
 router.get('/', showHomePage);
 
@@ -36,7 +37,6 @@ router.get('/organization/:id', showOrganizationDetailsPage);
 
 router.get('/new-organization', showNewOrganizationForm);
 
-
 // Route to handle new organization form submission
 router.post(
     '/new-organization',
@@ -44,13 +44,11 @@ router.post(
     processNewOrganizationForm
 );
 
-
 // Route to display the edit organization form
 router.get(
     '/edit-organization/:id',
     showEditOrganizationForm
 );
-
 
 // Route to handle edit organization form submission
 router.post(
@@ -59,18 +57,24 @@ router.post(
     processEditOrganizationForm
 );
 
-
+// Service project routes
 router.get('/projects', showProjectsPage);
 
 router.get('/project/:id', showProjectDetailsPage);
+
+router.get('/new-project', showNewProjectForm);
+
+router.post(
+    '/new-project',
+    projectValidation,
+    processNewProjectForm
+);
 
 router.get('/categories', showCategoriesPage);
 
 router.get('/category/:id', showCategoryDetailsPage);
 
-
 // Error-handling route
 router.get('/test-error', testErrorPage);
-
 
 export default router;
