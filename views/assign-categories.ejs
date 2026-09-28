@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+
+    <h1>
+        <%= title %>
+    </h1>
+
+    <h2>
+        <%= projectDetails.title %>
+    </h2>
+
+    <p>
+        Select the categories that apply to this service project.
+    </p>
+
+    <form action="/assign-categories/<%= projectId %>" method="POST">
+
+        <% categories.forEach(category=> { %>
+
+            <div class="form-group">
+
+                <label>
+
+                    <input type="checkbox" name="categoryIds" value="<%= category.category_id %>" <% if (
+                        assignedCategories.some( assigned=>
+                    assigned.category_id === category.category_id
+                    )
+                    ) { %>
+                    checked
+                    <% } %>
+                        >
+
+                        <%= category.name %>
+
+                </label>
+
+            </div>
+
+            <% }) %>
+
+
+                <button type="submit">
+                    Update Categories
+                </button>
+
+    </form>
+
+
+    <p>
+        <a href="/project/<%= projectId %>">
+            Cancel and Return to Project
+        </a>
+    </p>
+
+
+    <%- include('partials/footer') %>
