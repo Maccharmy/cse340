@@ -8,11 +8,21 @@
         <%= category.name %>
     </h2>
 
-    <h3>Service Projects</h3>
+    <p>
+        <a href="/edit-category/<%= category.category_id %>">
+            Edit Category
+        </a>
+    </p>
+
+    <h3>
+        Service Projects
+    </h3>
 
     <% if (projects.length===0) { %>
 
-        <p>No service projects are currently available for this category.</p>
+        <p>
+            No service projects are currently available for this category.
+        </p>
 
         <% } else { %>
 

@@ -1,0 +1,69 @@
+<%- include('partials/header') %>
+
+    <h1>
+        <%= title %>
+    </h1>
+
+    <p>
+        Update the service category name below.
+    </p>
+
+    <form action="/edit-category/<%= category.category_id %>" method="POST" class="form">
+
+        <div class="form-group">
+            <label for="name">
+                Category Name
+            </label>
+
+            <input type="text" id="name" name="name" value="<%= category.name %>" required maxlength="100"
+                placeholder="Enter category name">
+
+            <small>
+                Category name is required and must not exceed 100 characters.
+            </small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">
+                Update Category
+            </button>
+
+            <a href="/category/<%= category.category_id %>" class="btn">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+    <script>
+        const form = document.querySelector('form');
+        const nameInput = document.querySelector('#name');
+
+        form.addEventListener('submit', (event) => {
+            const name = nameInput.value.trim();
+
+            if (name === '') {
+                event.preventDefault();
+
+                nameInput.setCustomValidity(
+                    'Category name is required.'
+                );
+            } else if (name.length > 100) {
+                event.preventDefault();
+
+                nameInput.setCustomValidity(
+                    'Category name cannot exceed 100 characters.'
+                );
+            } else {
+                nameInput.setCustomValidity('');
+            }
+
+            nameInput.reportValidity();
+        });
+
+        nameInput.addEventListener('input', () => {
+            nameInput.setCustomValidity('');
+        });
+    </script>
+
+    <%- include('partials/footer') %>
