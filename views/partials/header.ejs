@@ -36,7 +36,17 @@
 
                 <a href="/categories">Categories</a>
 
-                <a href="/register">Register</a>
+                <% if (isLoggedIn) { %>
+
+                    <a href="/logout">Logout</a>
+
+                    <% } else { %>
+
+                        <a href="/register">Register</a>
+
+                        <a href="/login">Login</a>
+
+                        <% } %>
 
             </nav>
 
@@ -45,46 +55,71 @@
     </header>
 
     <!-- Flash Messages -->
+
     <% const messages=flash(); %>
 
         <% if (messages.success && messages.success.length> 0) { %>
+
             <div class="flash-message flash-success">
+
                 <% messages.success.forEach(message=> { %>
+
                     <p>
                         <%= message %>
                     </p>
+
                     <% }); %>
+
             </div>
+
             <% } %>
 
                 <% if (messages.error && messages.error.length> 0) { %>
+
                     <div class="flash-message flash-error">
+
                         <% messages.error.forEach(message=> { %>
+
                             <p>
                                 <%= message %>
                             </p>
+
                             <% }); %>
+
                     </div>
+
                     <% } %>
 
                         <% if (messages.warning && messages.warning.length> 0) { %>
+
                             <div class="flash-message flash-warning">
+
                                 <% messages.warning.forEach(message=> { %>
+
                                     <p>
                                         <%= message %>
                                     </p>
+
                                     <% }); %>
+
                             </div>
+
                             <% } %>
 
                                 <% if (messages.info && messages.info.length> 0) { %>
+
                                     <div class="flash-message flash-info">
+
                                         <% messages.info.forEach(message=> { %>
+
                                             <p>
                                                 <%= message %>
                                             </p>
+
                                             <% }); %>
+
                                     </div>
+
                                     <% } %>
 
                                         <main class="container">

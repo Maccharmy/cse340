@@ -38,7 +38,10 @@ import { testErrorPage } from './controllers/errors.js';
 
 import {
     showUserRegistrationForm,
-    processUserRegistrationForm
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout
 } from './controllers/users.js';
 
 
@@ -46,7 +49,6 @@ const router = express.Router();
 
 
 // Home page
-
 router.get(
     '/',
     showHomePage
@@ -54,7 +56,6 @@ router.get(
 
 
 // Organization routes
-
 router.get(
     '/organizations',
     showOrganizationsPage
@@ -72,7 +73,6 @@ router.get(
 
 
 // Handle new organization form submission
-
 router.post(
     '/new-organization',
     organizationValidation,
@@ -81,7 +81,6 @@ router.post(
 
 
 // Display edit organization form
-
 router.get(
     '/edit-organization/:id',
     showEditOrganizationForm
@@ -89,7 +88,6 @@ router.get(
 
 
 // Handle edit organization form submission
-
 router.post(
     '/edit-organization/:id',
     organizationValidation,
@@ -98,7 +96,6 @@ router.post(
 
 
 // Service project routes
-
 router.get(
     '/projects',
     showProjectsPage
@@ -122,7 +119,6 @@ router.post(
 
 
 // Edit service project routes
-
 router.get(
     '/edit-project/:id',
     showEditProjectForm
@@ -135,7 +131,6 @@ router.post(
 
 
 // Category routes
-
 router.get(
     '/categories',
     showCategoriesPage
@@ -143,7 +138,6 @@ router.get(
 
 
 // Display new category form
-
 router.get(
     '/new-category',
     showNewCategoryForm
@@ -151,7 +145,6 @@ router.get(
 
 
 // Handle new category form submission
-
 router.post(
     '/new-category',
     categoryValidation,
@@ -160,7 +153,6 @@ router.post(
 
 
 // Edit category routes
-
 router.get(
     '/edit-category/:id',
     showEditCategoryForm
@@ -180,7 +172,6 @@ router.get(
 
 
 // Assign categories to a project
-
 router.get(
     '/assign-categories/:projectId',
     showAssignCategoriesForm
@@ -193,7 +184,6 @@ router.post(
 
 
 // Error-handling test route
-
 router.get(
     '/test-error',
     testErrorPage
@@ -201,7 +191,6 @@ router.get(
 
 
 // User registration routes
-
 router.get(
     '/register',
     showUserRegistrationForm
@@ -210,6 +199,23 @@ router.get(
 router.post(
     '/register',
     processUserRegistrationForm
+);
+
+
+// User login routes
+router.get(
+    '/login',
+    showLoginForm
+);
+
+router.post(
+    '/login',
+    processLoginForm
+);
+
+router.get(
+    '/logout',
+    processLogout
 );
 
 
