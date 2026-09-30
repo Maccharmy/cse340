@@ -1,28 +1,32 @@
 <%- include("partials/header") %>
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Welcome to Service Network</h1>
-                <p>
-                    Discover organizations and service projects that make a difference
-                    in communities around the world.
-                </p>
-            </div>
-
-            <div class="hero-image">
-                <img src="/images/service-network.jpg" alt="Volunteers working together to serve their community">
-            </div>
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Welcome to Service Network</h1>
+            <p>
+                Discover organizations and service projects that make a difference
+                in communities around the world.
+            </p>
         </div>
-    </section>
 
-    <section class="content-section">
-        <h2>Make a Difference</h2>
-        <p>
-            Service Network helps individuals discover meaningful opportunities
-            to serve, connect with organizations, and participate in community
-            projects.
-        </p>
-    </section>
+        <div class="hero-image">
+            <img src="/images/service-network.jpg" alt="Volunteers working together to serve their community">
+        </div>
+    </div>
+</section>
 
-    <%- include("partials/footer") %>
+<section class="content-section">
+    <h2>Make a Difference</h2>
+    <p>
+        Service Network helps individuals discover meaningful opportunities
+        to serve, connect with organizations, and participate in community
+        projects.
+    </p>
+</section>
+
+<% if (isLoggedIn) { %>
+    <p><a href="/dashboard">My Dashboard</a></p>
+<% } %>
+
+<%- include("partials/footer") %>

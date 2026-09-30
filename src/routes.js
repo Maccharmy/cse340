@@ -27,8 +27,8 @@ import {
     showCategoryDetailsPage,
     showNewCategoryForm,
     processNewCategoryForm,
-    showEditCategoryForm,
     processEditCategoryForm,
+    showEditCategoryForm,
     showAssignCategoriesForm,
     processAssignCategoriesForm,
     categoryValidation
@@ -41,7 +41,9 @@ import {
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
-    processLogout
+    processLogout,
+    requireLogin,
+    showDashboard
 } from './controllers/users.js';
 
 
@@ -216,6 +218,14 @@ router.post(
 router.get(
     '/logout',
     processLogout
+);
+
+
+// Protected dashboard route
+router.get(
+    '/dashboard',
+    requireLogin,
+    showDashboard
 );
 
 
