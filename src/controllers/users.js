@@ -1,9 +1,14 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+import {
+    createUser,
+    authenticateUser,
+    getAllUsers
+} from '../models/users.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
+
 
 const processUserRegistrationForm = async (req, res) => {
     const { name, email, password } = req.body;
@@ -21,7 +26,10 @@ const processUserRegistrationForm = async (req, res) => {
         res.redirect('/');
     } catch (error) {
         console.error('Error registering user:', error);
-        req.flash('error', 'An error occurred during registration. Please try again.');
+        req.flash(
+            'error',
+            'An error occurred during registration. Please try again.'
+        );
         res.redirect('/register');
     }
 };
@@ -58,7 +66,10 @@ const processLoginForm = async (req, res) => {
         }
     } catch (error) {
         console.error('Error during login:', error);
-        req.flash('error', 'An error occurred during login. Please try again.');
+        req.flash(
+            'error',
+            'An error occurred during login. Please try again.'
+        );
         res.redirect('/login');
     }
 };
@@ -78,7 +89,10 @@ const processLogout = async (req, res) => {
 // Protect routes that require a logged-in user
 const requireLogin = (req, res, next) => {
     if (!req.session || !req.session.user) {
-        req.flash('error', 'You must be logged in to access that page.');
+        req.flash(
+            'error',
+            'You must be logged in to access that page.'
+        );
         return res.redirect('/login');
     }
 
@@ -87,18 +101,24 @@ const requireLogin = (req, res, next) => {
 
 
 // Middleware factory to require a specific user role
-const requireRole = (role) => {
+const requireRole = (role, redirectPath = '/') => {
     return (req, res, next) => {
         // Check if user is logged in first
         if (!req.session || !req.session.user) {
-            req.flash('error', 'You must be logged in to access this page.');
+            req.flash(
+                'error',
+                'You must be logged in to access this page.'
+            );
             return res.redirect('/login');
         }
 
         // Check if user's role matches the required role
         if (req.session.user.role_name !== role) {
-            req.flash('error', 'You do not have permission to access this page.');
-            return res.redirect('/');
+            req.flash(
+                'error',
+                'You do not have permission to access this page.'
+            );
+            return res.redirect(redirectPath);
         }
 
         // User has the required role
@@ -119,6 +139,28 @@ const showDashboard = (req, res) => {
 };
 
 
+// Display all registered users
+const showUsersPage = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+
+        res.render('users', {
+            title: 'Users',
+            users
+        });
+    } catch (error) {
+        console.error('Error retrieving users:', error);
+
+        req.flash(
+            'error',
+            'An error occurred while retrieving users.'
+        );
+
+        res.redirect('/dashboard');
+    }
+};
+
+
 export {
     showUserRegistrationForm,
     processUserRegistrationForm,
@@ -127,5 +169,6 @@ export {
     processLogout,
     requireLogin,
     requireRole,
-    showDashboard
+    showDashboard,
+    showUsersPage
 };

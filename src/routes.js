@@ -44,7 +44,8 @@ import {
     processLogout,
     requireLogin,
     requireRole,
-    showDashboard
+    showDashboard,
+    showUsersPage
 } from './controllers/users.js';
 
 
@@ -52,6 +53,7 @@ const router = express.Router();
 
 
 // Home page
+
 router.get(
     '/',
     showHomePage
@@ -59,6 +61,7 @@ router.get(
 
 
 // Organization routes
+
 router.get(
     '/organizations',
     showOrganizationsPage
@@ -71,6 +74,7 @@ router.get(
 
 
 // Admin-only organization routes
+
 router.get(
     '/new-organization',
     requireRole('admin'),
@@ -99,6 +103,7 @@ router.post(
 
 
 // Service project routes
+
 router.get(
     '/projects',
     showProjectsPage
@@ -111,6 +116,7 @@ router.get(
 
 
 // Admin-only project routes
+
 router.get(
     '/new-project',
     requireRole('admin'),
@@ -138,6 +144,7 @@ router.post(
 
 
 // Category routes
+
 router.get(
     '/categories',
     showCategoriesPage
@@ -145,6 +152,7 @@ router.get(
 
 
 // Admin-only category routes
+
 router.get(
     '/new-category',
     requireRole('admin'),
@@ -178,6 +186,7 @@ router.get(
 
 
 // Admin-only category assignment routes
+
 router.get(
     '/assign-categories/:projectId',
     requireRole('admin'),
@@ -192,6 +201,7 @@ router.post(
 
 
 // Error-handling test route
+
 router.get(
     '/test-error',
     testErrorPage
@@ -199,6 +209,7 @@ router.get(
 
 
 // User registration routes
+
 router.get(
     '/register',
     showUserRegistrationForm
@@ -211,6 +222,7 @@ router.post(
 
 
 // User login routes
+
 router.get(
     '/login',
     showLoginForm
@@ -228,10 +240,20 @@ router.get(
 
 
 // Protected dashboard route
+
 router.get(
     '/dashboard',
     requireLogin,
     showDashboard
+);
+
+
+// Admin-only users page
+
+router.get(
+    '/users',
+    requireRole('admin', '/dashboard'),
+    showUsersPage
 );
 
 
