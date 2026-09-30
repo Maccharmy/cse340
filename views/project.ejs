@@ -30,42 +30,44 @@
         </a>
     </p>
 
-    <p>
-        <a href="/edit-project/<%= project.project_id %>">
-            Edit Project
-        </a>
-    </p>
-
-    <p>
-        <a href="/assign-categories/<%= project.project_id %>">
-            Edit Categories
-        </a>
-    </p>
-
-    <h3>
-        Categories
-    </h3>
-
-    <% if (categories.length===0) { %>
-
+    <% if (user && user.role_name==='admin' ) { %>
         <p>
-            No categories have been assigned to this project.
+            <a href="/edit-project/<%= project.project_id %>">
+                Edit Project
+            </a>
         </p>
 
-        <% } else { %>
+        <p>
+            <a href="/assign-categories/<%= project.project_id %>">
+                Edit Categories
+            </a>
+        </p>
+        <% } %>
 
-            <div class="category-tags">
+            <h3>
+                Categories
+            </h3>
 
-                <% categories.forEach(category=> { %>
+            <% if (categories.length===0) { %>
 
-                    <a href="/category/<%= category.category_id %>" class="category-tag">
-                        <%= category.name %>
-                    </a>
+                <p>
+                    No categories have been assigned to this project.
+                </p>
 
-                    <% }) %>
+                <% } else { %>
 
-            </div>
+                    <div class="category-tags">
 
-            <% } %>
+                        <% categories.forEach(category=> { %>
 
-                <%- include('partials/footer') %>
+                            <a href="/category/<%= category.category_id %>" class="category-tag">
+                                <%= category.name %>
+                            </a>
+
+                            <% }) %>
+
+                    </div>
+
+                    <% } %>
+
+                        <%- include('partials/footer') %>

@@ -86,6 +86,27 @@ const requireLogin = (req, res, next) => {
 };
 
 
+// Middleware factory to require a specific user role
+const requireRole = (role) => {
+    return (req, res, next) => {
+        // Check if user is logged in first
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        // Check if user's role matches the required role
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/');
+        }
+
+        // User has the required role
+        next();
+    };
+};
+
+
 // Display the user dashboard
 const showDashboard = (req, res) => {
     const user = req.session.user;
@@ -105,5 +126,6 @@ export {
     processLoginForm,
     processLogout,
     requireLogin,
+    requireRole,
     showDashboard
 };

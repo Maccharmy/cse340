@@ -2,7 +2,6 @@
 
     <section class="page-header">
 
-        ```
         <h1>
             <%= title %>
         </h1>
@@ -11,16 +10,16 @@
             Find meaningful service projects and opportunities to help others.
         </p>
 
-        <p>
-            <a href="/new-project">Add New Service Project</a>
-        </p>
-        ```
+        <% if (user && user.role_name==='admin' ) { %>
+            <p>
+                <a href="/new-project">Add New Service Project</a>
+            </p>
+            <% } %>
 
     </section>
 
     <section class="content-section">
 
-        ```
         <% if (projects.length===0) { %>
 
             <p>No upcoming projects available at this time.</p>
@@ -55,7 +54,6 @@
                 </ul>
 
                 <% } %>
-                    ```
 
     </section>
 

@@ -50,7 +50,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware to make login status and NODE_ENV available to all templates
+// Middleware to make login status, user data, and NODE_ENV available to all templates
 app.use((req, res, next) => {
     res.locals.isLoggedIn = false;
 
@@ -58,7 +58,11 @@ app.use((req, res, next) => {
         res.locals.isLoggedIn = true;
     }
 
+    // Make the logged-in user's session data available to all templates
+    res.locals.user = req.session.user || null;
+
     res.locals.NODE_ENV = process.env.NODE_ENV;
+
     next();
 });
 

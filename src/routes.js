@@ -43,6 +43,7 @@ import {
     processLoginForm,
     processLogout,
     requireLogin,
+    requireRole,
     showDashboard
 } from './controllers/users.js';
 
@@ -68,30 +69,30 @@ router.get(
     showOrganizationDetailsPage
 );
 
+
+// Admin-only organization routes
 router.get(
     '/new-organization',
+    requireRole('admin'),
     showNewOrganizationForm
 );
 
-
-// Handle new organization form submission
 router.post(
     '/new-organization',
+    requireRole('admin'),
     organizationValidation,
     processNewOrganizationForm
 );
 
-
-// Display edit organization form
 router.get(
     '/edit-organization/:id',
+    requireRole('admin'),
     showEditOrganizationForm
 );
 
-
-// Handle edit organization form submission
 router.post(
     '/edit-organization/:id',
+    requireRole('admin'),
     organizationValidation,
     processEditOrganizationForm
 );
@@ -108,26 +109,30 @@ router.get(
     showProjectDetailsPage
 );
 
+
+// Admin-only project routes
 router.get(
     '/new-project',
+    requireRole('admin'),
     showNewProjectForm
 );
 
 router.post(
     '/new-project',
+    requireRole('admin'),
     projectValidation,
     processNewProjectForm
 );
 
-
-// Edit service project routes
 router.get(
     '/edit-project/:id',
+    requireRole('admin'),
     showEditProjectForm
 );
 
 router.post(
     '/edit-project/:id',
+    requireRole('admin'),
     processEditProjectForm
 );
 
@@ -139,33 +144,32 @@ router.get(
 );
 
 
-// Display new category form
+// Admin-only category routes
 router.get(
     '/new-category',
+    requireRole('admin'),
     showNewCategoryForm
 );
 
-
-// Handle new category form submission
 router.post(
     '/new-category',
+    requireRole('admin'),
     categoryValidation,
     processNewCategoryForm
 );
 
-
-// Edit category routes
 router.get(
     '/edit-category/:id',
+    requireRole('admin'),
     showEditCategoryForm
 );
 
 router.post(
     '/edit-category/:id',
+    requireRole('admin'),
     categoryValidation,
     processEditCategoryForm
 );
-
 
 router.get(
     '/category/:id',
@@ -173,14 +177,16 @@ router.get(
 );
 
 
-// Assign categories to a project
+// Admin-only category assignment routes
 router.get(
     '/assign-categories/:projectId',
+    requireRole('admin'),
     showAssignCategoriesForm
 );
 
 router.post(
     '/assign-categories/:projectId',
+    requireRole('admin'),
     processAssignCategoriesForm
 );
 

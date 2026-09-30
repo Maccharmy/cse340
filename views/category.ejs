@@ -8,38 +8,40 @@
         <%= category.name %>
     </h2>
 
-    <p>
-        <a href="/edit-category/<%= category.category_id %>">
-            Edit Category
-        </a>
-    </p>
-
-    <h3>
-        Service Projects
-    </h3>
-
-    <% if (projects.length===0) { %>
-
+    <% if (user && user.role_name==='admin' ) { %>
         <p>
-            No service projects are currently available for this category.
+            <a href="/edit-category/<%= category.category_id %>">
+                Edit Category
+            </a>
         </p>
+        <% } %>
 
-        <% } else { %>
+            <h3>
+                Service Projects
+            </h3>
 
-            <ul>
+            <% if (projects.length===0) { %>
 
-                <% projects.forEach(project=> { %>
+                <p>
+                    No service projects are currently available for this category.
+                </p>
 
-                    <li>
-                        <a href="/project/<%= project.project_id %>">
-                            <%= project.title %>
-                        </a>
-                    </li>
+                <% } else { %>
 
-                    <% }) %>
+                    <ul>
 
-            </ul>
+                        <% projects.forEach(project=> { %>
 
-            <% } %>
+                            <li>
+                                <a href="/project/<%= project.project_id %>">
+                                    <%= project.title %>
+                                </a>
+                            </li>
 
-                <%- include('partials/footer') %>
+                            <% }) %>
+
+                    </ul>
+
+                    <% } %>
+
+                        <%- include('partials/footer') %>
